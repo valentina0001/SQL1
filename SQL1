@@ -1,0 +1,144 @@
+SQL programiranje i administracija
+
+
+
+U postojećoj bazi DB_ASSIG1 deklarisati varijable:
+1.	2. var01 = 100 i var 02 = MyVar, korišćenjem naredbe SELECT
+2.	var03 = YourVar i var04 = 1, korišćenjem ključne reči SET
+3.	var05 = 0 i var06 = TheirVar, tako da budu definisani prilikom deklarisanja
+
+USE DB_ASSIG1;
+GO
+
+DECLARE @var01 [int],
+ 
+@var02 [varchar](100);
+ 
+SELECT  @var01 = 100 ,
+ 
+@var02 = N'MyVar';
+
+
+DECLARE @var04 [int],
+ 
+@var03 [varchar](1);
+ 
+SET @var04 = 1
+
+ 
+SET @var03 = N'YourVar';
+
+DECLARE @var05 [int] = 0,
+ 
+@var06 [varchar](10) = N'TheirVar';
+ 
+GO
+
+
+2.2. Napisati naredbu CASE koja će za svaki pojedinačni dan u sedmici moći da vrati naziv dana, a njenim izvršavanjem će biti vraćen naziv dana koji trenutno jeste.
+
+
+
+SELECT CASE (SELECT DATENAME(dw, CURRENT_TIMESTAMP))
+ 
+WHEN N'Monday' THEN N'Its Monday!'
+ 
+WHEN N'Tuesday' THEN N'Its Tuesday!'
+ 
+WHEN N'Wednesday' THEN N'Its Wednesday!'
+
+WHEN N'Thursday' THEN N'Its Thursday!'
+
+WHEN N'Friday' THEN N'Its Friday!'
+
+WHEN N'Saturday' THEN N'Its Saturday!'
+
+ELSE N'Its Sunday!'
+ 
+END;
+
+GO
+
+
+
+2.3. Napisati korisnički definisanu funkciju koja će za zadati datum vratiti redni broj dana u nedelji. 
+
+
+USE [DB_ASSIG1];
+ 
+GO
+ 
+
+CREATE FUNCTION dbo.fnIsWeekday ( @p_date [datetime] )
+ 
+RETURNS [bit]
+ 
+AS
+ 
+BEGIN
+ 
+DECLARE @weekday [bit]
+ 
+IF ( SELECT DATENAME(dw, @p_date)
+ 
+) IN ( N'Monday', N'Tuesday', N'Wednesday', N'Thursday', N'Friday', N'Saturday', N'Sunday' )
+ 
+BEGIN
+ 
+SET @weekday = 0
+ 
+END
+ 
+BEGIN
+ 
+SET @weekday = 1
+ 
+END
+ 
+BEGIN
+ 
+SET @weekday = 2
+ 
+END
+
+BEGIN
+ 
+SET @weekday = 3
+ 
+END
+
+BEGIN
+ 
+SET @weekday = 4
+ 
+END
+
+BEGIN
+ 
+SET @weekday = 5
+ 
+END
+ 
+BEGIN
+ 
+SET @weekday = 6
+ 
+END
+ 
+RETURN (@weekday)
+ 
+END;
+ 
+GO
+ 
+
+
+ 
+USE [DB_ASSIG1];
+ 
+GO
+ 
+SELECT dbo.fnIsWeekday ('February 15, 2022');
+ 
+GO
+
